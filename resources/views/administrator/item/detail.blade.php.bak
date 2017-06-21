@@ -1,0 +1,329 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: manhdung
+ * Date: 6/18/16
+ * Time: 2:41 PM
+ */
+?>
+@extends("layouts.main_backend")
+@section('title') Item Detail | @parent @stop
+@section('style')
+    {{--<link href="{{ asset('backend/assets/plugins/bootstrap-multiselect/bootstrap-multiselect.css') }}" rel="stylesheet" />--}}
+    <link href="{{ asset('backend/assets/plugins/switchery/switchery.min.css') }}" rel="stylesheet" />
+
+    <link href="{{ asset('backend/assets/plugins/jquery-file-upload/css/jquery.fileupload.css') }}" rel="stylesheet" />
+    <link href="{{ asset('backend/assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css') }}" rel="stylesheet" />
+
+@endsection
+
+@section('content')
+    <div id="content" class="content">
+        <!-- begin breadcrumb -->
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Administrator</a></li>
+            <li><a href="javascript:;">Item</a></li>
+            <li class="active">Detail</li>
+        </ol>
+        <!-- end breadcrumb -->
+        <!-- begin page-header -->
+        <h1 class="page-header">Item detail</h1>
+        <!-- end page-header -->
+
+        <!-- begin row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                            {{--<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>--}}
+                        </div>
+                        <h4 class="panel-title">Item Detail</h4>
+                    </div>
+                    <div class="panel-body">
+
+                        <?php $attr_arr = array('id' => "item_detail_frm", 'class' => 'form-horizontal', 'files'=> true, 'data-parsley-validate' => true);
+
+                        if(isset($domain->id) && $domain->id > 0){
+                            $attr_arr['route'] = array('backend.a.item.update', $domain->id);
+                            $attr_arr['method'] = 'PATCH';
+
+                        } else {
+                            $attr_arr['route'] = "backend.a.item.store";
+                            $attr_arr['method'] = 'POST';
+                        }
+
+                        ?>
+                        {!! Form::open($attr_arr) !!}
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Name</label>
+                            <div class="col-md-6">
+                                <input type="text" name="name" class="form-control" placeholder="name" data-parsley-required="true" value="{{ $domain->name or '' }}"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Name URL</label>
+                            <div class="col-md-6">
+                                <input type="text" name="name_url" class="form-control" placeholder="name url" data-parsley-required="true" value="{{ $domain->name_url or '' }}"/>
+                            </div>
+                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--<label class="col-md-2 control-label">Hình đại diện </label>--}}
+                            {{--<div class="col-md-10">--}}
+                                {{--<input type="file" name="image_file">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Hình đính kém</label>
+                            <div class="col-md-10">
+                                <div class="row fileupload-buttonbar">
+                                    <div class="col-md-7">
+                                        <span class="btn btn-success fileinput-button">
+                                            <i class="fa fa-plus"></i>
+                                            <span>Add files...</span>
+                                            <input type="file" name="attach_file[]" multiple>
+                                        </span>
+                                        {{--<button type="submit" class="btn btn-primary start">--}}
+                                            {{--<i class="fa fa-upload"></i>--}}
+                                            {{--<span>Start upload</span>--}}
+                                        {{--</button>--}}
+                                        <button type="reset" class="btn btn-warning cancel">
+                                            <i class="fa fa-ban"></i>
+                                            <span>Cancel upload</span>
+                                        </button>
+                                        {{--<button type="button" class="btn btn-danger delete">--}}
+                                            {{--<i class="glyphicon glyphicon-trash"></i>--}}
+                                            {{--<span>Delete</span>--}}
+                                        {{--</button>--}}
+                                        <!-- The global file processing state -->
+                                        <span class="fileupload-process"></span>
+                                    </div>
+                                    <!-- The global progress state -->
+                                    <div class="col-md-5 fileupload-progress fade">
+                                        <!-- The global progress bar -->
+                                        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                                        </div>
+                                        <!-- The extended global progress state -->
+                                        <div class="progress-extended">&nbsp;</div>
+                                    </div>
+                                </div>
+                                <!-- The table listing the files available for upload/download -->
+                                <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Status</label>
+                            <div class="col-md-9">
+                                <input type="checkbox" name="status" data-render="switchery" data-theme="blue" @if(!isset($domain->active) || $domain->active == '1') checked @endif />
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-12 center">
+                                <button type="submit" class="btn btn-sm btn-success width-100">Save</button>
+                            </div>
+                        </div>
+
+                        {!! Form::close() !!}
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+
+    <!-- The template to display files available for upload -->
+    <script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {{--{% if (!i && !o.options.autoUpload) { %}--}}
+                {{--<button class="btn btn-primary start" disabled>--}}
+                    {{--<i class="glyphicon glyphicon-upload"></i>--}}
+                    {{--<span>Start</span>--}}
+                {{--</button>--}}
+            {{--{% } %}--}}
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+    <!-- The template to display files available for download -->
+    <script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" name="delete" value="1" class="toggle">
+            {% } else { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+
+
+    {{--<script src="{{ asset('backend/assets/plugins/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>--}}
+
+
+    <script src="{{ asset('backend/assets/plugins/switchery/switchery.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/form-slider-switcher.demo.min.js') }}"></script>
+
+
+
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/vendor/tmpl.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/vendor/load-image.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.fileupload.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.fileupload-process.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.fileupload-image.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.fileupload-audio.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.fileupload-video.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.fileupload-validate.js') }}"></script>
+    <script src="{{ asset('backend/assets/plugins/jquery-file-upload/js/jquery.fileupload-ui.js') }}"></script>
+
+{{--    <script src="{{ asset('backend/assets/js/form-multiple-upload.demo.min.js') }}"></script>--}}
+
+
+    <script>
+
+
+        $(document).ready(function(){
+
+            FormSliderSwitcher.init();
+
+            // Initialize the jQuery File Upload widget:
+            $('#item_detail_frm').fileupload({
+                autoUpload: false,
+                disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+                maxFileSize: 5000000,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+            });
+
+            // Enable iframe cross-domain access via redirect option:
+            $('#item_detail_frm').fileupload(
+                    'option',
+                    'redirect',
+                    window.location.href.replace(
+                            /\/[^\/]*$/,
+                            '/cors/result.html?%s'
+                    )
+            );
+
+            // Upload server status check for browsers with CORS support:
+            if ($.support.cors) {
+                $.ajax({
+                    type: 'HEAD'
+                }).fail(function () {
+                    $('<div class="alert alert-danger"/>').text('Upload server currently unavailable - ' + new Date()).appendTo('#fileupload');
+                });
+            }
+
+            // Load & display existing files:
+            //$('#item_detail_frm').addClass('fileupload-processing');
+            $.ajax({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: $('#item_detail_frm').fileupload('option', 'url'),
+                dataType: 'json',
+                context: $('#item_detail_frm')[0]
+            }).always(function () {
+                $(this).removeClass('fileupload-processing');
+            }).done(function (result) {
+                $(this).fileupload('option', 'done')
+                        .call(this, $.Event('done'), {result: result});
+            });
+
+
+//            FormMultipleUpload.init();
+
+//            $('#cbo_queue').multiselect({
+//                numberDisplayed: 4,
+//                buttonClass: 'btn btn-white',
+//                templates: {
+//                    button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> <b class="caret"></b></button>',
+//                    ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+//                    filter: '<li class="multiselect-item multiselect-filter"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+//                    filterClearBtn: '<span class="input-group-btn"><button class="btn btn-white multiselect-clear-filter" type="button"><i class="glyphicon glyphicon-remove-circle"></i></button></span>',
+//                    li: '<li><a tabindex="0"><label></label></a></li>',
+//                    divider: '<li class="multiselect-item divider"></li>',
+//                    liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
+//                }
+//            });
+
+
+
+        });
+
+
+
+    </script>
+@endsection

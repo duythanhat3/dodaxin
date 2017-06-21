@@ -1,0 +1,136 @@
+.center{
+    text-align: center;
+}
+
+.float-left{
+    float: left !important;
+}
+
+.no-padding{
+    padding: 0 !important;
+}
+
+.todolist-input,
+.todolist-title {
+    font-weight: bold;
+}
+
+.todolist-input,
+.todolist-title span{
+    font-weight: normal;
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
+
+
+.unavailable{
+    color: #ffb752;
+}
+.online{
+    color:#87b846;
+}
+.offline{
+    color:#e7e7e7;
+}
+
+
+.navbar-logo, .login .login-header .brand .logo {
+    border: none;
+    width: 30px;
+}
+
+
+
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    vertical-align: middle;
+}
+.btn-file > input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    cursor: pointer;
+    direction: ltr;
+    font-size: 23px;
+    transform: translate(-300px, 0) scale(4);
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.fileupload {
+    padding-left: 0;
+   /* margin-bottom: 20px;*/
+}
+.fileupload h4 {
+    margin: 0 0 10px;
+}
+.fileupload .fileupload-preview + div {
+    display: inline-block;
+    margin-left: 10px;
+}
+.fileupload .thumbnail {
+    display: inline-block;
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ffffff;
+}
+.fileupload .thumbnail > img {
+    display: block;
+    max-height: 100%;
+    vertical-align: middle;
+}
+.fileupload .thumbnail.fileupload-small {
+    width: 50px;
+    height: 50px;
+}
+.fileupload .thumbnail.fileupload-small.flexible {
+    width: auto;
+    height: auto;
+    max-width: 75px;
+    max-height: 75px;
+}
+.fileupload .thumbnail.fileupload-large {
+    width: 250px;
+    height: 150px;
+}
+.fileupload .thumbnail.fileupload-large.flexible {
+    width: auto;
+    height: auto;
+    max-width: 350px;
+    max-height: 250px;
+}
+.fileupload .thumbnail + .btn {
+    margin-bottom: 5px;
+}
+.fileupload .thumbnail + .btn + .btn {
+    margin-bottom: 5px;
+}
+.fileupload .btn {
+    vertical-align: middle;
+}
+.fileupload .form-control {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+    cursor: text;
+}
+.fileupload .raw.thumbnail {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+.fileupload-exists .fileupload-new,
+.fileupload-new .fileupload-exists {
+    display: none;
+}
+.fileupload-new .input-group-addon .btn-file {
+    border-radius: 0 4px 4px 0;
+}
+.fileupload-exists .input-group-addon .btn-file {
+    border-radius: 0;
+}
